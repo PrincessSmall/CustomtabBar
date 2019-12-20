@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface LMTabBar : UITabBar//继承自UITabBar
 
-@property (nonatomic, copy) NSArray<LMTabBarItem *> *LMItems;//item数组
+@property (nonatomic, copy) NSArray<LMTabBarItem *> *lmItems;//item数组
 @property (nonatomic, weak) id <LMTabBarDelegate> lmDelegate;
 
 @end

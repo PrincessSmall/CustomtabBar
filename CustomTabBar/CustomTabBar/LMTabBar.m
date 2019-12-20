@@ -16,6 +16,7 @@
 
 @implementation LMTabBar
 
+//重写初始化方法
 - (instancetype)init {
     if (self = [super init]) {
         self.backgroundColor = [UIColor whiteColor];
@@ -23,6 +24,11 @@
     return self;
 }
 
+- (void)setLmItems:(NSArray<LMTabBarItem *> *)lmItems {
+    _lmItems = lmItems;
+}
+
+//重写layoutSubviews
 - (void)layoutSubviews {
     [super layoutSubviews];
     // 移除系统的tabBarItem
@@ -38,12 +44,12 @@
 }
 
 
-/// 设置自定义的tabbarItem
+/// 设置自定义的LMTabBarItem
 - (void)setupItems {
-    CGFloat width = self.frame.size.width/self.LMItems.count;
+    CGFloat width = self.frame.size.width/self.lmItems.count;
     CGFloat height = self.frame.size.height;
-    for (int i = 0; i < self.LMItems.count; i++) {
-        LMTabBarItem *item = [self.LMItems objectAtIndex:i];
+    for (int i = 0; i < self.lmItems.count; i++) {
+        LMTabBarItem *item = [self.lmItems objectAtIndex:i];
         item.frame = CGRectMake(i*width, 0, width, height);
         [self addSubview:item];
         item.delegate = self;
@@ -52,7 +58,7 @@
 
 
 #pragma mark ----LMTabBarItemDelegate
-
+//实现代理方法
 - (void)tabBarItem:(LMTabBarItem *)item didSelectIndex:(NSInteger)index {
     if (self.lmDelegate && [self.lmDelegate respondsToSelector:@selector(tabBar:didSelectItem:atIndex:)]) {
         [self.lmDelegate tabBar:self didSelectItem:item atIndex:index];

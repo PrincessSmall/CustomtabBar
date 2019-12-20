@@ -19,6 +19,7 @@ static NSInteger defaultTag = 100000;
 
 @implementation LMTabBarItem
 
+//重写初始化方法
 - (instancetype)init {
     if (self = [super init]) {
         [self addSubview:self.animationView];
@@ -29,11 +30,6 @@ static NSInteger defaultTag = 100000;
     return self;
 }
 
-// 重写setTag方法 TODO 这个用法第一次
-- (void)setTag:(NSInteger)tag {
-    [super setTag:tag + defaultTag];
-}
-
 /// item点击手势，响应点击事件
 - (void)tapItem:(UITapGestureRecognizer *)tap {
     if (self.delegate && [self.delegate respondsToSelector:@selector(tabBarItem:didSelectIndex:)]) {
@@ -41,11 +37,24 @@ static NSInteger defaultTag = 100000;
     }
 }
 
-- (void)setAnimationJsonName:(NSString *)animationJsonName {//set方法设置动画view的数据
+
+#pragma mark ----set
+
+// 重写setTag方法
+- (void)setTag:(NSInteger)tag {
+    [super setTag:tag + defaultTag];
+}
+
+//set方法设置动画view的数据
+- (void)setAnimationJsonName:(NSString *)animationJsonName {
     _animationJsonName = animationJsonName;
     [self.animationView setAnimationNamed:animationJsonName];
 }
 
+
+#pragma mark ----layoutSubviews
+
+//重写layoutSubviews
 - (void)layoutSubviews {
     [super layoutSubviews];
     CGRect rect = self.frame;
