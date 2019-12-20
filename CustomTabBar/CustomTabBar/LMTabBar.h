@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+static CGFloat LMTabBarHeight = 48.0;
 NS_ASSUME_NONNULL_BEGIN
 
 @class LMTabBarItem;

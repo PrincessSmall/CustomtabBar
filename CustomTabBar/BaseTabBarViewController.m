@@ -7,6 +7,7 @@
 //
 
 #import "BaseTabBarViewController.h"
+
 #import "AViewController.h"
 #import "BViewController.h"
 #import "CViewController.h"
@@ -15,11 +16,18 @@
 #import "LMTabBar.h"
 #import "LMTabBarItem.h"
 
+#import <Masonry.h>
 #import <lottie-ios/Lottie/LOTAnimationView.h>
 
-static CGFloat LMTabBarHeight = 48.0;
 
-@interface BaseTabBarViewController ()<LMTabBarDelegate>
+#define Device_Is_iPhoneX_Devices \
+({BOOL isPhoneX = NO;\
+if (@available(iOS 11.0, *)) {\
+isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bottom > 0.0;\
+}\
+(isPhoneX);})
+
+@interface BaseTabBarViewController ()<LMTabBarDelegate, UITabBarControllerDelegate>
 
 @property (nonatomic, strong) LMTabBar *customTabBar;
 @property (nonatomic, assign) NSInteger lastSelectedIndex;
@@ -34,7 +42,9 @@ static CGFloat LMTabBarHeight = 48.0;
     self.view.backgroundColor = [UIColor whiteColor];
 
     [self setupChildVC];
+    self.delegate = self;
     self.currentSelectedIndex = 0;
+    self.selectedIndex = 0;
     // Do any additional setup after loading the view.
 }
  
@@ -71,9 +81,13 @@ static CGFloat LMTabBarHeight = 48.0;
         item.tag = i;
     }
     self.customTabBar.lmItems = [items copy];
-    
+
     [self.view addSubview:self.customTabBar];
-    self.customTabBar.frame = CGRectMake(0, CGRectGetHeight(self.view.frame) - LMTabBarHeight, CGRectGetWidth(self.view.frame), LMTabBarHeight);
+    [self.customTabBar mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.mas_equalTo(0);
+        make.height.mas_equalTo(Device_Is_iPhoneX_Devices ? LMTabBarHeight+34:LMTabBarHeight);
+        make.bottom.mas_equalTo(0);
+    }];
 }
 
 
@@ -84,6 +98,7 @@ static CGFloat LMTabBarHeight = 48.0;
         self.lastSelectedIndex = self.currentSelectedIndex;
         self.currentSelectedIndex = index;
     }
+    self.selectedIndex = index;
 }
 
 - (void)setLastSelectedIndex:(NSInteger)lastSelectedIndex {

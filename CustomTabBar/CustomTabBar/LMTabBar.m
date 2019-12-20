@@ -46,11 +46,13 @@
 
 /// 设置自定义的LMTabBarItem
 - (void)setupItems {
+    UIView *backView = [[UIView alloc]initWithFrame:self.bounds];
+    backView.backgroundColor = [UIColor whiteColor];
+    [self addSubview:backView];
     CGFloat width = self.frame.size.width/self.lmItems.count;
-    CGFloat height = self.frame.size.height;
     for (int i = 0; i < self.lmItems.count; i++) {
         LMTabBarItem *item = [self.lmItems objectAtIndex:i];
-        item.frame = CGRectMake(i*width, 0, width, height);
+        item.frame = CGRectMake(i*width, 0, width, LMTabBarHeight);
         [self addSubview:item];
         item.delegate = self;
     }
